@@ -1,0 +1,44 @@
+1.加入spring
+1）。加入jar包
+2）配置web.xml文件
+3）。加入spring的配置文件
+
+2.加入hibernate
+
+1）。同时建立持久化类，和其对应的.hbm.xml文件，生成对应的数据表
+
+2）。Spring整个Hibernate
+3）。步骤：
+①。加入jar包
+②。在类路径下加入hibernate.cfg.xml文件，在其中配置hibernate的基本属性
+③。建立持久化类，和其对应的.hbm.xml文件
+④。和spring进行整合
+i.加入c3p0和MySQL的驱动
+ii.在Spring的配置文件中配置：数据源，SessionFactory，声明式事务
+⑤。启动项目，会看到生成对应的数据表
+
+3.加入struts2
+1).加入jar包（若有重复的jar包，则需要删除版本较低的，否则会发生包的冲突）
+2）。在web.xml文件中配置Struts2的Filter
+3）。加入Struts2 的配置文件
+4）。整合Spring
+①。加入Struts2 的spring插件的jar包
+②。在spring的配置文件中正常配置action，注意action的scope为prototype
+③。在Struts2 的配置文件中配置action时，class属性指向该Action在IOC中的ID
+
+4.完成功能
+1)。获取所有的员工信息:若在Dao中只查询Employee的信息，而且Employee和Department使用的是懒加载。页面上还需要
+显示员工信息，此时会出现懒加载异常，代理对象不能被初始化；
+解决：
+①：打开懒加载:不推荐使用
+<many-to-one>中设置  lazy=false
+②。获取Employee时使用迫切左外连接同时初始化其关联的Department对象。
+③。使用OpenSessionInViewFilter:知道页面加载完再关Session。
+2）删除员工信息：
+①。正常删除，返回值是redirect 类型，而且重定向到emp-list
+②。确定要删除吗？使用jQuery完成
+③。ajax 的使用参见 struts-2.3.15.3-all/struts-2.3.15.3/docs/WW/docs/ajax.html
+3）。添加员工信息
+①。显示表单页面：需要先查询所有的部门信息
+②。使用Struts2 的 ModelDriven 和  Preparable 拦截器（点击提交的时候把数据封装成一个对象）
+③。时间是一个字符串，需要转为一个 Date 类型的对象 
